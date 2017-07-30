@@ -47,24 +47,24 @@ static AWSDDOSLogger *sharedInstance;
     if ([logMessage->_fileName isEqualToString:@"AWSDDASLLogCapture"]) {
         return;
     }
-    
+
     NSString * message = _logFormatter ? [_logFormatter formatLogMessage:logMessage] : logMessage->_message;
-    
+
     if (message) {
         const char *msg = [message UTF8String];
-        
+
         switch (logMessage->_flag) {
             case AWSDDLogFlagError     :
-                os_log_error(OS_LOG_DEFAULT, msg);
+                os_log_error(OS_LOG_DEFAULT, "%{public}s", msg);
                 break;
             case AWSDDLogFlagWarning   :
             case AWSDDLogFlagInfo      :
-                os_log_info(OS_LOG_DEFAULT, msg);
+                os_log_info(OS_LOG_DEFAULT, "%{public}s", msg);
                 break;
             case AWSDDLogFlagDebug     :
             case AWSDDLogFlagVerbose   :
             default                 :
-                os_log_debug(OS_LOG_DEFAULT, msg);
+                os_log_debug(OS_LOG_DEFAULT, "%{public}s", msg);
                 break;
         }
     }
